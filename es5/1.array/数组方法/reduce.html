@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-hans">
+<head>
+	<meta charset="UTF-8">
+	<title>Array .reduce</title>
+</head>
+<body>
+	<h1>Array .reduce</h1>
+
+<script>
+	const num = [18, 26, 37, 6, 89, 99];
+	const goods = [
+		{
+			price: 30.99,
+			count: 3
+		},
+		{
+			price: 183.56,
+			count: 6
+		},
+		{
+			price:30,
+			count:4
+		}
+	];
+
+	/* reduce 4个参数，原数组不变， 返回的是叠加后的结果，回调函数返回的结果
+			prev 数组的第一项
+			next 数组的第二项
+			index
+			item
+	 */
+	let result = num.reduce( (prev, next, index, item)=>{
+		// console.log(`prev ${prev}, next ${next}, index ${index}, item ${item}`);
+		return prev + next; // 第一次的返回值，会作为下一次的 prev
+	});
+	console.log(result);
+
+
+	let cart = goods.reduce( (prev, next)=>{
+		return prev + next.price * next.count;
+	}, 0); // 0 默认指定第一次的 prev，默认指定第一次的返回值
+	console.log(`cart ${cart}`);
+
+
+	const arr = [
+		[20, 30, 66],
+		['ok', 'lala', 'buybye'],
+		['see you next time', 'haha', 999]
+	];
+
+	// 连concat 链接两个或多个数组，不改变原数组，返回一个新数组
+	let array = arr.reduce( (prev, next)=>{
+		return prev.concat(next); // 合并成一维数组
+	});
+	console.log(array);
+
+	
+
+	
+</script>
+</body>
+</html>

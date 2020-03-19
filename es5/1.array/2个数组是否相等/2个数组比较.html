@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>array</title>
+</head>
+<body>
+  <script src="1.js"></script>
+  <script src="all.js"></script>
+  <script>
+    // list, all
+  //  console.log(JSON.stringify(all))
+
+    all.forEach( (item,index)=>{
+      item.checked = false;
+      // console.log(item, index)
+      for(let i=0; i<list.length; i++){
+        if(list[i].title === item.title){
+          item.checked = true;
+          console.log('for', item.title, list[i].title)
+        }
+      }
+    });
+
+
+    function diff(array=[], array2=[]){
+      let result = [];
+      arr.forEach( (item,i)=>{
+        let num = 0;
+        for(let j=0; j<arr2.length; j++){
+          if(item === arr2[j])
+            num++;
+            break;
+        }
+        if(num === 0)
+          result.push(item);
+      });
+      return result;
+    }
+
+
+    function diff(){
+      var arr3 = [];
+      for (let key in array) {
+        var stra = array[key];
+        var count = 0;
+        for (var j = 0; j < array2.length; j++) {
+          var strb = array2[j];
+          if (stra == strb)
+            count++;
+        }
+        if (count === 0) { //表示数组1的这个值没有重复的，放到arr3列表中  
+          arr3.push(stra);
+        }
+      }
+    }
+
+    // console.log(JSON.stringify(all))
+  </script>
+</body>
+</html>

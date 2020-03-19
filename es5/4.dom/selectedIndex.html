@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<script>
+		function User(){
+			this.age = 23;
+			this.sex = "female";
+			this.love = "money";
+		}
+		var user = new User();
+
+		function show(select){
+			if(select.selectedIndex ==0){
+				return
+			}
+			// 变量用 []， 用 . 报错
+			console.log(user[select.value], '【索引值是】'+select.selectedIndex);
+
+			/*
+			[] 方括号语法：像一种参数语法，可用一个变量来表示引用对象的哪个属性
+
+			如果不用[]， 打点的方式要用eval() 函数
+			eval("user."+ select.value)
+				实际上利用了 eval函数的性质，执行了一段动态生成的代码，并返回了结果
+				但是，不推荐使用 eval()
+			 */
+		}
+
+		// selectedIndex 属性可设置或返回下拉列表中被选选项的索引号
+		// 从0开始从上往下依次递增,没选中是-1
+		// 简单的说你可以将列表框理解为一个数组，selectedIndex就是这个数组的索引值，它对应的就是列表中该位置显示的项
+		
+	</script>
+</head>
+<body>
+	<select name="" onchange="show(this)">
+		<option>请选择你要查看的信息</option>
+		<option value="age">年龄</option>
+		<option value="sex">性别</option>
+		<option value="love">爱好</option>
+	</select>
+</body>
+</html>

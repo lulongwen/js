@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>menu</title>
+</head>
+<body>
+	<script src="./menu.js"></script>
+	<script>
+	// console.log('menu', JSON.stringify(menu) );
+	console.log('permission', permission(menu));
+
+	function permission(data){
+		return data.map( item=> item.name);
+	}
+
+
+	let Async = {
+		tools: 'tools',
+		dataManager: 'dataManager',
+		Mainbody: 'Mainbody',
+		chart: 'chart',
+		infos: 'infos',
+		finance: 'finace',
+		market: 'market',
+		purchase: 'purchase',
+		inventory: 'inventory',
+	};
+	let {tools, dataManager, Mainbody, chart, infos, finance, market, purchase, inventory} = Async
+	let menuRoute = tree(menu);
+
+	console.log('menu', menuRoute)
+
+
+	function tree(data) {
+		let val = [];
+		// 将数据存储为 以 id 为 KEY 的 map 索引数据列
+		// 删除 所有 children,以防止多次调用
+  	let map = {};
+	  data.forEach( item=>{
+	    // delete item.children;
+	    map[item.id] = item;
+	  });
+
+
+  	data.forEach( item=>{
+    	// if(!item.conponent) return; // 不是组件
+    	// 以当前遍历项，的pid,去map对象中找到索引的id
+    	let parent = map[item.pid];
+
+      item.name = item.path_name;
+      item.meta = {
+        keepAlive: true,
+        title: item.title,
+        icon: item.icon
+      };
+
+	    // 如果找到索引，说明此项不在顶级当中,那么需要把此项添加到他对应的父级中
+	    if (parent) { // item.pid != 0 不是一级菜单
+	      if(item.component) item.component = eval(item.component);
+	      // 第一次走后面，然后走前面
+	      (parent.children || (parent.children=[])).push(item);
+	    }
+    	else { // item.pid == 0 是一级列表
+	      //如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
+	      if(item.component === 'Mainbody') item.component = Mainbody;
+	      val.push(item);
+	    }
+  	});
+  	return val;
+	}
+
+	</script>
+</body>
+</html>

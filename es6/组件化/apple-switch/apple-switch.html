@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 32px;
+      outline: none;
+      border: 1px solid #ddd;
+      border-radius: 30px;
+      -webkit-appearance: none;
+      vertical-align: middle;
+      transition: border ease-in, box-shadow ease-out;
+    }
+    /* before 就是小圆圈 */
+    .switch::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30px;
+      height:30px;
+      border-radius: 50%;
+      background-color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0, .3);
+      transition: ease-in .3s;
+    }
+    .switch:checked {
+      /* background-color: #f69; */
+      box-shadow: #f69 0 0 0 16px inset;
+      transition: ease-in .3s;
+    }
+    .switch:checked::before {
+      left: 19px;
+    }
+    label span {
+      vertical-align: middle;
+      color: #f69;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <label for="">
+      <input type="checkbox" class="switch">
+      <span class="switch-text">关</span>
+    </label>
+  </div>
+
+  <script>
+    let _switch = document.querySelector('.switch')
+    let text = document.querySelector('.switch-text')
+    text.innerHTML = _switch.checked ? '开' : '关'
+    _switch.addEventListener('change', ev => {
+      text.innerHTML = ev.target.checked ? '开' : '关'
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-hans">
+<head>
+  <meta charset="UTF-8">
+  <title>Array for in 遍历window属性</title>
+  <meta name="keywords" content="for in 遍历window-document属性">
+  <meta name="description" content="for in遍历window-document属性，显示window-document所有的属性，window有100多个属性">
+  <meta name="robots" content="index,follow">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      max-width: 800px;
+      width: auto;
+      margin: 0 auto;
+      padding: 1em;
+      line-height: 1.6;
+      font-size: 1.2em;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <h1>for in 遍历window属性</h1>
+  <div id="win"></div>
+
+  <h2>for in 遍历document属性</h2>
+  <div id="doc"></div>
+<script>
+  show('#win', window);
+  show('#doc', document);
+
+  function show(el, obj) {
+    let str = '';
+    let num = 0;
+    for (var attr in obj) {
+      str += `${num}.${attr} : ${obj[attr]} <br>`;
+      num++;
+    }
+    ;
+    document.querySelector(el).innerHTML += str;
+  }
+</script>
+</body>
+</html>

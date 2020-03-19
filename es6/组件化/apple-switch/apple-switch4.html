@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>apple - switch效果</title>
+  <style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 32px;
+      outline: none;
+      border: 1px solid #ddd;
+      border-radius: 30px;
+      -webkit-appearance: none;
+      vertical-align: middle;
+      transition: border ease-in, box-shadow ease-out;
+    }
+    /* before 就是小圆圈 */
+    .switch::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30px;
+      height:30px;
+      border-radius: 50%;
+      background-color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0, .3);
+      transition: ease-in .3s;
+    }
+    .switch:checked {
+      /* background-color: #f69; */
+      box-shadow: #f69 0 0 0 16px inset;
+      transition: ease-in .3s;
+    }
+    .switch:checked::before {
+      left: 19px;
+    }
+    label span {
+      vertical-align: middle;
+      color: #f69;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    // 基类，抽取公共的方法
+    class Component {
+      constructor () {
+        this.el = null
+      }
+
+      createDomFromString (str) {
+        let el = document.createElement('div')
+        el.innerHTML = str
+        // 返回div 下的第一个元素
+        return el.firstElementChild
+      }
+
+      setState (lock) {
+        this.state = { ...this.state, lock }
+        console.log(123, this.state)
+
+        let before = this.el
+        let after = this._render()
+        before.parentNode.replaceChild(after, before)
+      }
+
+      // 私有的render方法
+      _render () {
+        // 调用子类的 render方法
+        this.el = this.createDomFromString(this.render())
+
+        if (!this.fnChange) return
+        this.el.firstElementChild.addEventListener('change', this.fnChange.bind(this), false)
+        return this.el
+      }
+
+      init (el) {
+        console.log('init', this)
+        el.appendChild(this._render())
+      }
+    }
+
+
+    // switch，继承好之后，要调用 super()
+    // 后续更新代码，只需要维护 业务逻辑，公共代码都在 Component里面
+    class Switch extends Component {
+      constructor () {
+        super() // Component.call(this)
+        this.state = { lock: false }
+        this.timer = null
+      }
+
+      // 初始化只渲染一次，render只调用一次，每次change都要重新渲染
+      fnChange (ev) {
+        // 连续点击有bug，先清除之前的定时器
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.setState(ev.target.checked)
+        }, 300)
+      }
+      
+      render () {
+        // 直接返回的是 DOM元素
+        let status = this.state.lock ? '开' : '关'
+        return `
+          <label>
+            <input type="checkbox" class="switch" ${this.state.lock ? 'checked' : ''}/>
+            <span class="switch-text">${status}</span>
+          </label>
+        `
+      }
+    }
+
+
+    // 字符串的DOM 用 innerHTML，DOM标签用 appendChild()
+    let app = document.getElementById('app')
+    new Switch().init(app)
+    new Switch().init(app)
+  </script>
+</body>
+</html>

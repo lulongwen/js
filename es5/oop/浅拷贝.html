@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-cmn-hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>JS 面向对象-浅拷贝</title>
+</head>
+<body>
+
+<script>
+  let obj = {
+    name: 'Book',
+    color: 'red'
+  };
+
+  let person = {
+    age: '200',
+    hobby: 'eating'
+  }
+
+    // Object.assign(target, ...sources) // 对象的浅拷贝
+  // let man = Object.assign({}, obj, person); // clone
+  let man = Object.assign(obj, person); // merge
+  // console.log(man===obj, man, obj);
+
+
+  // 浅拷贝  Object.assign() || Fn
+  function(target){
+    for(var i=1; i<arguments.length; i++){
+      var source = arguments[i];
+      for(var key in source){
+        if(Object.prototype.hasOwnProperty.call(source,key) ){
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  }
+
+
+  // 深拷贝
+  let obj2 = {
+    hello: {
+      title : "lala",
+      sub: {
+        box: 'water',
+        goods: 'food'
+      }
+    }
+  }
+  let copy = JSON.parse( JSON.stringify(obj2) );
+
+  let result = Object.assign({}, copy, man);
+  // console.log(copy);
+  console.log(result); // 实现深拷贝 思路就是将一个对象转成json字符串，然后又将字符串转回对象
+
+  // 无法复制函数
+  // 原型链没了，对象就是object，所属的类没了，因为简单，大多时候可以满足需求
+</script>
+</body>
+</html>

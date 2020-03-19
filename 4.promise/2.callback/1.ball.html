@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>小球运动的回调函数</title>
+  <style>
+    #box div {
+      width: 50px;
+      height: 50px;
+      background: #8f72ea;
+      border-radius: 20px;
+      position: absolute;
+      left: 0;
+    }
+    #ball1 {
+      top: 0
+    }
+    #ball2 {
+      top: 60px
+    }
+    #ball3 {
+      top: 120px
+    }
+  </style>
+</head>
+<body>
+  <div id="box">
+    <div id="ball1"></div>
+    <div id="ball2"></div>
+    <div id="ball3"></div>
+  </div>
+
+  <script>
+    function move1(el, position, callback) {
+      return new Promise((resolve, reject) => {
+        let left = 0 // parseInt(el.style.margin)
+        let timer = setInterval(() => {
+          left += 10
+          if (left >= position) {
+            clearInterval(timer)
+            el.style.transform = `translateX(${position}px)`
+            callback && callback()
+            resolve(true)
+          }
+          
+          el.style.transform = `translateX(${left}px)`
+        }, 32)
+      })
+    }
+    
+    function move (el, position, callback) {
+      return new Promise((resolve, reject) => {
+        let left = el.getBoundingClientRect().x
+        function start () {
+          left += 10
+          el.style.transform = `translateX(${left}px)`
+          
+          if (left <= position) {
+            return requestAnimationFrame(start)
+          }
+          callback && callback()
+          resolve(true)
+        }
+        requestAnimationFrame(start)
+      })
+    }
+
+
+    // 1 callback
+    /* move(ball1, 500, function() {
+      move(ball2, 400, function () {
+        move(ball3, 300, function () {
+          move(ball4, 400, function() {
+            move(ball5, 500, function() {
+              console.log('moving ok')
+            })
+          })
+        })
+      })
+    }); */
+
+    
+    // 2 promise
+    /* move(ball1, 500)
+    .then(res => {
+      console.log('ball1',res)
+      return move(ball2, 400)
+    })
+    .then(res => {
+      console.log('ball2', res)
+      return move(ball3, 300)
+    })
+    .then(res => {
+      console.log('ball3', res)
+      move(ball4, 400) // 没有 return 返回 undefined
+    })
+    .then(res => {
+      console.log('ball4', res)
+      return move(ball5, 500)
+    })
+    .then(res => {
+      console.log(res, 'moving ok ball5')
+    })
+    .then(res => {
+      console.log(res, 'ball 6')
+    })
+ */
+
+  // 3 generator  bluebird, co, q
+  /* function* m() {
+    yield move(ball1, 500)
+    yield move(ball2, 400)
+    yield move(ball3, 300)
+    yield move(ball4, 400)
+    yield move(ball5, 500)
+  }
+
+  function co(it) {
+    return new Promise((resolve, reject) => {
+      function next(data) {
+        let {done, value} = it.next(data)
+        if (done) return resolve(value)
+
+        value.then(data => {
+          next(data)
+        }, reject)
+      }
+
+      next()
+    })
+  }
+
+  co(m()).then(data => {
+    console.log('moving')
+  })
+  */
+
+
+  // 4 async & await  axios, fetch
+  async function m() {
+    await move(ball1, 500)
+    await move(ball2, 400)
+    await move(ball3, 300)
+  }
+
+  m().then(res => {
+    console.log('moving ok')
+  })
+
+  </script>
+</body>
+</html>

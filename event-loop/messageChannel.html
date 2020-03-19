@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>mutationObserver</title>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+setTimeout(() => {
+  console.log('settimeout')
+}, 0)
+
+let chanel = new MessageChannel()
+let port1 = chanel.port1
+let port2 = chanel.port2
+
+port2.postMessage('hello') // 1 先发消息
+
+// 2 监控
+port1.onmessage = function(ev) {
+  console.log('port2 message', ev.data)
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>.map & .filter 合并数组</title>
+</head>
+
+<body>
+  <script src="./order.js"></script>
+  <script>
+    // 把number 中的字段合并到 order中，改变原数组
+    order.map(item => {
+      let {
+        customer_car_id
+      } = item;
+      let current = number.filter(num => num.id === customer_car_id)[0].plate_numbers;
+      return item.plate_numbers = current;
+    });
+
+
+    // 映射一个新数组
+    var arr = order.map(item => item.customer_car_id);
+
+    console.log(JSON.stringify(arr))
+
+
+    var str = '[{"id":5},{"id":31},{"id":2},{"id":42},{"id":4},{"id":22},{"id":5},{"id":28}]';
+    var id = str.replace(/[\"\[|\]|id|:|{|}]/gi, '');
+    // "5,31,2,42,4,22,5,28"
+
+
+    // 去除最后一个 ,
+    var str = "5,31,2,42,4,22,5,28,";
+    var id = str.replace(/,$/g, '');
+    // "5,31,2,42,4,22,5,28"
+
+
+
+    var high = {
+      "id": 78,
+      "work_order_sn": "W20181121575651",
+      "appointment_id": 0,
+      "customer_id": 5,
+      "salesman_user_id": 4,
+      "master_technician_user_id": 0,
+      "final_test_user_id": 0,
+      "finance_user_id": 0,
+      "customer_car_id": 5,
+      "is_driver_owner": 1,
+      "plate_numbers": "津QQ7809",
+      "driver_name": "李芸芸",
+      "driver_phone": "18919723658",
+      "driver_id_no": "110101199003075699",
+      "mileage": 20000,
+      "enter_store_time": "2018-11-21 08:00:00",
+      "highlight":{"work_order_sn":["W20180928184<mark>909</mark>53491015"]}
+    };
+
+    var key = Object.keys(high.highlight)[0];
+    // console.log(Object.keys(high), Object.keys(high.highlight)[0]);
+    var arr = Object.keys(high).filter(item => item === key)[0];
+    console.log(key, high[key] = high.highlight[key][0], high);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-hans">
+<head>
+	<meta charset="UTF-8">
+	<title>Array some every includes</title>
+</head>
+<body>
+	<h1>Array.some .every .includes</h1>
+
+<script>
+	const num = [18, 26, 37, 6, 89, 99];
+
+	// .includes() 返回的是 Boolean，找到返回 true
+	// console.log( num.includes(6) );
+
+
+	// every 找 false，找到 false后不再执行代码，返回 false
+	let result = num.every( (item, index)=>{
+		console.log(item, item.toString().indexOf(8));
+		return item.toString().indexOf(3) > -1;
+	});
+	console.log(result);
+
+
+	// some 找 true，找到 true后不再执行代码，返回 true，找不到返回 false
+	let some = num.some( (item, index)=>{
+		return item.toString().indexOf(3) > -1;
+	});
+	console.log(some);
+
+
+	// some 找 true，找到 true后不再执行代码，返回 true，找不到返回 false
+	let found = num.find( (item, index)=>{
+		return item > 25;
+	});
+	console.log(found);
+
+
+	
+
+	
+</script>
+</body>
+</html>

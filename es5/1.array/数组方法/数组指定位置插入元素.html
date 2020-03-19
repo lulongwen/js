@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>JS 数组指定位置插入元素</title>
+</head>
+<body>
+  
+  <script>
+    var arr = ['one', 'two', 'ok', 23]
+
+    // splice('索引位置', '0', '添加的元素') 0 添加，1 替换
+    // arr数组的第二个位置添加，如果 1 就是替换
+    arr.splice(2, 0, 'title')
+    // ["one", "two", "title", "ok", 23]
+
+    arr.splice(2, 1, 'delete')
+    // ["one", "two", "delete", 23]
+
+
+    // 扩展原型的方法
+    Array.prototype.insert = function(index, item) {
+      this.splice(index, 0, item)
+    }
+
+    arr.insert(2, 'insert')
+    // ["one", "two", "insert", "ok", 23]
+  
+  </script>
+</body>
+</html>

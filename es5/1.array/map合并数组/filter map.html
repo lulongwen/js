@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-hans">
+<head>
+	<meta charset="UTF-8">
+	<title>Array .map, .filter</title>
+</head>
+<body>
+	<h1>Array .map, .filter</h1>
+
+<script>
+
+	const arr = ['apple', 'pear', 'bananer', 'orange', 'tomato'];
+	const num = [18, 26, 37, 6, 89, 99];
+
+
+	/* filter 原数组不变，返回 过滤后的新数组
+		回调函数返回结果：
+		 如果 true 表示这一项放到新的数组里
+	 */
+	let newArr = num.filter( item=>{
+		return item>26 && item <99;
+	});
+	// console.log(num, newArr);
+	
+
+	/* map 映射，将原有的数组映射成一个新数组
+		原数组不变，返回一个新数组，回调函数中返回什么，这一项就是什么
+
+		`` ES6中的模板字符串，遇到变量用 ${} 取值
+	*/
+	let text = num.map( item=>{
+		return `<p>${item}</p>`;
+	});
+	// console.log('text', text);
+	// console.log( text.join('') ); // join('') 数组转字符串
+
+
+	var list = [
+    { id: 1, name: "a" },
+    { id: 2, name: "b" },
+    { id: 3, name: "c" }
+	];
+
+	var replacement = { id: 2, name: "xiaobai", sex: "female" };
+
+	list = list.map( item=> {
+	    return item.id === replacement.id ? replacement : item; 
+	});
+
+	console.log('Array map',list);
+	
+
+	
+
+
+
+	
+
+
+
+
+	
+
+
+</script>
+</body>
+</html>

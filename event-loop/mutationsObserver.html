@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>mutationObserver</title>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+setTimeout(() => {
+  console.log('settimeout')
+}, 0)
+
+let app = document.getElementById('app')
+// 微任务，执行要比定时器快
+let observer = new MutationObserver(() => {
+  console.log('当前标签已全部添加', app.children.length)
+})
+
+observer.observe(app, {childList: true})
+
+for(let i = 0; i < 100; i++) {
+  app.appendChild(document.createElement('p'))
+}
+
+// 重复执行添加
+for(let i = 0; i < 100; i++) {
+  app.appendChild(document.createElement('p'))
+}
+</script>
+</body>
+</html>

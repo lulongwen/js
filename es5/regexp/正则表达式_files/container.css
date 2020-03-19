@@ -1,0 +1,50 @@
+.topic,.tips,.msg1,.msg2,.noborder{
+margin:5px 0;
+margin-right:auto;
+margin-left:auto;
+padding:5px;
+width:960px;
+font-size:14px;
+text-align:left;
+}
+.topic{
+border:solid 1px #FFB9B9;
+background-color:#FFEFEF;
+}
+.tips{
+border:1px solid #69C9FC;
+background-color:#EEF8FE;
+}
+.msg1{
+border:1px solid #9FD788;
+background-color:#F0FBEB;
+}
+.msg2{
+border:1px solid #F4D39E;
+background-color:#FFF7D9;
+}
+.msg1 a,.msg2 a,.noborder a{
+font-size:14px;
+vertical-align:middle;
+}
+.topic span,.tips span,.msg1 span,.msg2 span{
+font-weight:bold;
+}
+.noborder{
+text-align:left;
+}
+.mainContent,.mainContainer{
+padding:5px;
+background-color:#FFF;
+text-align:center;
+font-size:14px;
+}
+.mainContent a,.mainContainer a{
+font-size:14px;
+line-height:180%;
+}
+.commonContainer{
+width:960px;
+height:1%;
+text-align:center;
+}

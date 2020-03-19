@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>招聘详情页</title>
+<link rel="stylesheet" href="assets/960.css">
+</head>
+<body>
+<!-- <h1>location.search && location.hash传值</h1> -->
+<div class="gridgs main">
+	<header class="grid-3">
+		<h2>招贤纳士</h2>
+	</header>
+
+	<section class="grid-9 content">
+		<h2 style="visibility: hidden">&nbsp;</h2>
+		<h2></h2>
+		<section class="description">
+			<h3></h3>
+			<section class="clearfix"></section>
+		</section>
+		<footer></footer>
+	</section>
+	<a class="close">显示网格</a>
+</div>
+<script src="assets/job.js"></script>
+<script>
+	// 输出数组
+	console.dir(Data);
+	var key =window.location.search.substring(1).split('&')[0].split('=')[1];
+	var hash =window.location.hash.split('=')[1];
+		console.log(key,hash); // sh 0
+	var header=document.querySelector('.main header');
+	
+	// 生成左侧内容
+	var str='';
+	for(var i=0;i<Data.list.length;i++){
+		// 三目运算
+		var cls=key==Data.list[i].lx ? 'active': '';
+		str+='<p> \
+				<a href="job.html?s='+Data.list[i].lx+'&p=1" class="'+cls+'">'+Data.list[i].text+'</a> \
+			</p>';
+	};
+	header.innerHTML += str;
+
+	// 生成右侧内容
+	content();
+	function content(){
+		var content=document.querySelector('.content');
+		var h2=content.querySelector('h2:last-of-type');
+		console.log(h2);
+		h2.innerHTML =Data[key].imgText;
+
+		var h3=content.querySelector('.description h3');
+		var section=content.querySelector('.description section.clearfix');
+		h3.innerHTML= Data[key].text[hash].zw;
+
+
+		// 声明数组
+		var title=['招聘公司：','公司性质：','职位性质：','工作地点：','工作经验：','学习要求：','招聘人数：','薪资待遇：','发布日期：','招聘类型：'];
+		var textArr=[];
+
+		var elem=Data[key].text[hash];
+		// var elem=Data[sh].text[0];
+		// for in 遍历数组，添加数据到textArr数组中
+		for (let attr in elem){
+			// 跳过前2个数组
+			if(attr == 'zw' || attr=='jj'){
+				continue;
+			};
+			// 如果到最后的info 跳出循环
+			if(attr == 'info'){
+				break;
+			};
+			// 格式化时间
+			if(attr == 'sj'){
+				elem[attr]=Data.date( elem[attr], 1 );
+			};
+			// 输出数组
+			textArr.push(elem[attr]);
+		};
+
+		// 2个 for循环
+		var span='';
+		for(var i=j=0;i<title.length, j<textArr.length; i++, j++){
+			//console.log(i,j);
+			span+='<p><span>'+title[i]+'</span>'+textArr[j]+'</p>';
+		};
+		section.innerHTML=span;
+
+		// 工作职责：
+		var long=Data[key].text[hash].info[1].l;
+		var word=Data[key].text[hash].info[1].t;
+		var ol=document.createElement('ol');
+		lis(long, word, ol);
+
+		// 岗位要求
+		var long=Data[key].text[hash].info[0].l;
+		var word=Data[key].text[hash].info[0].t;
+		var ol=document.createElement('ol');
+		lis(long, word, ol);
+
+		function lis(long, word, parent){
+			parent.innerHTML='<h4>'+word+'</h4>';
+			var str='';
+			for(var i=0;i<long.length;i++){
+				str+='<li>'+long[i]+'</li>';
+			}
+			parent.innerHTML+=str;
+			content.appendChild(parent);
+		};
+
+		// footer
+		var footer =content.querySelector('footer');
+		footer.innerHTML='<p>能力符合要求者，简历请投递：'+Data.email+'</p>';
+		content.appendChild(footer);
+	};
+</script>
+</body>
+</html>

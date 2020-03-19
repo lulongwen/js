@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>招聘列表页</title>
+<link rel="stylesheet" href="assets/960.css">
+</head>
+<body>
+<!-- <h1>招聘页面-页面location.hash传值</h1> -->
+<div class="gridgs main">
+	<header class="grid-3">
+		<h2>招贤纳士</h2>
+	</header>
+
+	<section class="grid-9 content">
+		<h2 style="visibility:hidden">&nbsp</h2>
+		<h2></h2>
+		<section class="description"></section>
+		<footer></footer>
+	</section>
+</div>
+<a class="close">显示网格</a>
+<script src="assets/job.js"></script>
+<script>
+	// 输出数组
+	console.dir(data)
+
+	// 初始化 window.search // ?  
+	var header=document.querySelector('.main header')
+	var search=window.location.search || '?s=sh&p=1'
+
+	var key =search.substring(1).split('&')[0].split('=')[1]
+	var pn =search.substring(1).split('&')[1].split('=')[1]
+		console.log(key,pn) // sh 1
+	/*
+		获取location.search 字符串的参数
+		'?s=sh&p=1' 前后不要有空格
+		生成左侧内容
+	*/
+	var str=''
+	for(var i=0; i<data.list.length; i++){
+		// 三目运算
+		// 拼接 链接路径：?s=sh&p=1，就是等号后面的参数=> =sh =1
+		var cls=key==data.list[i].lx ? 'active': ''
+		str+='<p> \
+				<a href="?s='+data.list[i].lx+'&p=1" class="'+cls+'">'+data.list[i].text+'</a> \
+			</p>'
+	}
+	header.innerHTML += str
+
+	// 生成右侧内容
+	content()
+	function content(){
+		var content=document.querySelector('.content')
+		var h2=content.querySelector('h2:last-of-type')
+			//console.log(h2) 标题
+		h2.innerHTML =data[key].imgText
+		var description =content.querySelector('.description')
+		var footer =content.querySelector('footer')
+		
+		var len= Math.ceil(data[key].text.length / 2)
+		var start= (pn-1) *2
+		var end=start+2
+			console.log(start, end)
+		if(end > data[key].text.length){
+			end=data[key].text.length
+		}
+
+		var str=''
+		for(var i=start; i< end; i++){
+			// 循环生成 li
+			var li=''
+			for(var j=0; j< data[key].text[i].info[0].l.length; j++){
+				li+='<li>'+data[key].text[i].info[0].l[j]+'</li>'
+				
+			}
+
+			str+='<h3><a href="job-detail.html?s='+key+'&p='+i+'#ln='+i+'">'+data[key].text[i].zw+'</a></h3> \
+			<span>需求人数：'+data[key].text[i].rs+'</span> \
+			<time datetime="'+data.date( data[key].text[i].sj )+'">'+data.date( data[key].text[i].sj )+'</time> \
+			<ol>'+li+' \
+				<p><a href="job-detail.html?s='+key+'&p='+i+'#ln='+i+'">【查看详情】</a></p> \
+			</ol>'
+		}
+		description.innerHTML =str
+
+		// footer
+		var prev= parseInt(pn)-1
+		var next= parseInt(pn)+1
+		if(prev < 1){
+			prev=1
+		}
+		if(next > len){
+			next=len
+		}
+
+		// i+1，要加括号，不加括号，会把i当做字符串进行拼接
+		var a=''
+		footer.innerHTML='<a href="?s='+key+'&p='+prev+'">&laquo</a>'
+		for(var i=0; i<len; i++){
+			var cls= (pn==i+1) ? 'active' :''
+			a+='<a href="?s='+key+'&p='+(i+1)+'" class="'+cls+'">'+(i+1)+'</a>'
+		}
+		footer.innerHTML+=a
+		footer.innerHTML+='<a href="?s='+key+'&p='+next+'">&raquo</a>'
+	}
+
+
+	toggle()
+	function toggle() {
+	  let close = document.querySelector('.close')
+	  let grid = document.querySelector('.gridgs')
+	  let on = true
+	  close.onclick = function() {
+	    grid.style.background = on ? "url(assets/960.gif) repeat-y center" : "";
+	    this.innerHTML = on ? "隐藏网格" : "显示网格"
+	    on = !on
+	  }
+	}
+</script>
+</body>
+</html>

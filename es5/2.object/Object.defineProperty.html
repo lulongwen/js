@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-cmn-hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Object.defineProperty()</title>
+  <style>
+    body{
+      max-width: 800px;
+      width: auto;
+      margin: 3em auto;
+      font-size: 16px;
+    }
+    input{
+      padding: .5em;
+    }
+  </style>
+</head>
+<body>
+
+<input type="text" name="" id="input"><br>
+<div id="text"></div>
+
+<script>
+  let obj = {};
+  let temp = {};
+
+  Object.defineProperty(obj, 'name', {
+    get(){ // 取 obj的 name属性会触发
+      return temp['name'];
+    },
+    set(val){ // 给 obj赋值会触发 get方法
+      // obj['name'] = val; 错误的用法，会死循环，用 temp中转一下
+      temp['name'] = val; // 改变temp的结果
+      input.value = val; // 将值赋予输入框
+    }
+  });
+
+  // 页面一加载，会调用 get方法
+  input.value = obj.name;
+
+  // 输入框的值改变时，会调用 set方法
+  input.addEventListener('input', function(){
+    obj.name = this.value;
+    text.innerText = obj.name;
+  });
+
+
+  /*Object.defineProperty(obj, 'name',{
+    configurable: false, // 是否可删除
+    writable: false, // 是否可重新赋值
+    enumerable: true, // 是否可枚举
+    value: 2
+  });*/
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

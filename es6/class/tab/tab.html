@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>tab</title>
+  <style>
+    ul {
+      list-style: none;
+    }
+    
+    .tab .tab-item {
+      height: 40px;
+    }
+    
+    .tab li {
+      float: left;
+      width: 100px;
+      height: 40px;
+      line-height: 40px;
+      margin-right: 1px;
+      text-align: center;
+      background-color: green;
+      color: #fff;
+      cursor: pointer;
+    }
+    
+    .tab li.active {
+      background-color: #9da;
+    }
+    
+    .tab li.change {
+      background-color: #ff1b1b;
+    }
+  </style>
+</head>
+
+<body>
+<div id="tab" class="tab"></div>
+
+<script src="./tab.js"></script>
+<script>
+let el = document.getElementById('tab')
+let params = {
+  el,
+  index: 1,
+  // activeName: 'active',
+  data: [
+    {title: '腾讯小新闻'},
+    {title: '网易云音乐'},
+    {title: '百度云视频'},
+    {title: '虾米音乐台'}
+  ]
+}
+const mytab = new Tab(params)
+console.log('tab', mytab)
+
+</script>
+</body>
+</html>
