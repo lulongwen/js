@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>摩擦运动-运动过程中，速度越来越慢；让速度慢慢变小</title>
+  <style>
+    body {
+      margin: 0
+    }
+    .app {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-color: purple;
+      color: #fff
+    }
+  </style>
+</head>
+<body>
+<button>摩擦运动</button>
+<br><br>
+<div class="app"></div>
+<script>
+const el = str => document.querySelector(str)
+const app = el('.app')
+const btn = el('button')
+
+btn.onclick = function() {
+  move(app)
+}
+
+function move(el) {
+  clearInterval(el.timer)
+  let speed = 50
+  
+  el.timer = setInterval(() => {
+    speed -= 2 // 摩擦系数，越来越慢；减到负数就会往回跑
+    // speed *= .92
+    // speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed)
+    console.log(el.offsetLeft, speed)
+    el.style.left = el.offsetLeft + speed + 'px'
+  
+    if (el.offsetLeft <= 0) clearInterval(el.timer)
+  }, 50)
+}
+</script>
+</body>
+</html>

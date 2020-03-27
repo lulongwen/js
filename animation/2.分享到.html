@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS中的运动</title>
+	<style>
+		body {margin: 0}
+		.app {
+			position: absolute;
+			left: -100px;
+			top: 100px;
+			width: 100px;
+			height: 200px;
+			background-color: purple;
+			color: #fff
+		}
+		.share {
+			position: absolute;
+			top: 70px;
+			right: -30px;
+			width: 30px;
+			height: 70px;
+			background-color: lightcoral;
+			color: #fff;
+			text-align: center
+		}
+		.app p {
+			line-height: 22px;
+			margin-bottom: 0;
+			border-bottom: 1px solid #ddd;
+		}
+	</style>
+</head>
+<body>
+	<div class="app">
+		<p>UI设计</p>
+		<p>前端开发</p>
+		<p>后台开发</p>
+		<span class="share">分享到</span>
+	</div>
+	<script>
+		// 1 点击按钮，让 div 向右移动
+		// 2 定时器，开启定时器前先清除定时器
+		const el = str => document.querySelector(str)
+		const share = el('.share')
+		const app = el('.app')
+		let timer
+		
+		app.onmouseenter = function () {
+			move({target: 0, speed: 10})
+		}
+		
+		app.onmouseleave = function() {
+			move({target: -100, speed: -10})
+		}
+		
+		function move({target, speed}) {
+			clearInterval(timer)
+			timer = setInterval(() => {
+				let {offsetLeft: left} = app
+
+				if(app.offsetLeft === target) {
+					app.style.left = target + 'px'
+					return clearInterval(timer)
+				}
+				
+				app.style.left = left + speed + 'px'
+			}, 32)
+		}
+	</script>
+</body>
+</html>

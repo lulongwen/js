@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>缓冲算法-多个属性同时运动</title>
+  <style>
+    body {
+      margin: 0
+    }
+    .app {
+      position: absolute;
+      width: 100px;
+      height: 200px;
+      background-color: purple;
+      color: #fff
+    }
+    img {
+			margin-left: 200px;
+      opacity: 0.3;
+      filter: alpha(opacity=30)
+    }
+  </style>
+</head>
+<body>
+<div class="app"></div>
+<img src="images/flower.jpg" alt="flower" width="300">
+<script>
+const el = str => document.querySelector(str)
+const img = el('img')
+const app = el('.app')
+
+img.onmouseenter = function () {
+  move(this, {opacity: 100}) // opacity: 1
+}
+img.onmouseleave = function () {
+  move(this, {opacity: 30}) // opacity: .3
+}
+
+app.onmouseenter = function() {
+  // 缺点：一个属性还没走完，就清除了定时器
+  move(this, {width: 200, height: 300})
+}
+app.onmouseleave = function() {
+  move(this, {width: 100, height: 100})
+}
+
+// 缓冲算法，speed是算出来的，取到当前值去算速度
+function move(el, obj) {
+  let [value, speed] = [0, 0]
+  
+  clearInterval(el.timer)
+  el.timer = setInterval(() => {
+    let flag = true
+    
+    // 定时器每走一下，把要运动的属性都推进一次
+    for(let attr in obj) {
+      let style = css(el, attr)
+      let target = obj[attr]
+      // 小数精度问题：结果是个近似值，四舍五入得到正确值
+      value = (attr === 'opacity') ? Math.round(style * 100) : parseInt(style)
+      
+      // 缓冲动画算法，向上，向下取整解决不能到达目标点
+      speed = (target - value) / 8
+      speed = (speed > 0) ? Math.ceil(speed) : Math.floor(speed)
+      
+      if (value !== target) {
+        flag = false // 判断是否执行完成
+        if (attr !== 'opacity') {
+          return el.style[attr] = value + speed + 'px'
+        }
+        el.style.opacity = (value + speed) / 100 + ''
+        el.style.filter = `alpha(opacity=${value + speed})`
+      }
+    }
+  
+    // 所有的属性都运动完，再清除定时器
+    if (flag) clearInterval(el.timer)
+  }, 30)
+}
+
+// 获取 css样式，结果：数字字符串
+function css(obj, attr) {
+  // IE下，obj.currentStyle是一个对象，非 IE显示的是 undefined
+  if (obj.currentStyle) {
+    return obj.currentStyle[attr]
+  }
+  // 标准，第二个参数是伪类，不是伪类忽略或设置 null
+  return getComputedStyle(obj, null)[attr]
+}
+</script>
+</body>
+</html>

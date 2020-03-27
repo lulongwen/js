@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS中的运动</title>
+	<style>
+		body {margin: 0}
+		button {
+			margin-bottom: 20px;
+		}
+		.app {
+			width: 100px;
+			height: 100px;
+			background-color: purple;
+			transition: transform 1s linear;
+			position: absolute;
+			/*transform: translateX(500px);*/
+		}
+	</style>
+</head>
+<body>
+	<h1>在js中，如何让一个页面元素动起来</h1>
+	<button>动起来</button>
+	<div class="app"></div>
+	<script>
+		// 1 点击按钮，让 div 向右移动
+		// 2 定时器，开启定时器前先清除定时器
+		// 3 开始运动，同时在运动前加入判断，以便满足某个要求停止运动
+		const el = str => document.querySelector(str)
+		const btn = el('button')
+		const app = el('.app')
+
+		let timer
+		btn.onclick = function () {
+			
+			clearInterval(timer)
+			timer = setInterval(() => {
+				let {offsetLeft: left} = app
+				if(app.offsetLeft >= 300) {
+					clearInterval(timer)
+				}
+				console.log(app.offsetLeft, left)
+				app.style.left = left + 10 + 'px'
+				
+				// 错误的用法，translate 不会引起浏览器重绘，offsetLeft值永远都是 0
+				// app.style.transform = `translateX(${app.offsetLeft + 10}px)`
+			}, 100)
+		}
+	</script>
+</body>
+</html>

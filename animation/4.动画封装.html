@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>多个属性运动</title>
+  <style>
+    body {
+      margin: 0
+    }
+    
+    .app {
+      position: absolute;
+      left: -100px;
+      top: 100px;
+      width: 100px;
+      height: 200px;
+      background-color: purple;
+      color: #fff
+    }
+    .app p {
+      line-height: 22px;
+      margin-bottom: 0;
+      padding: 0 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .app .share {
+      position: absolute;
+      top: 70px;
+      right: -30px;
+      width: 30px;
+      height: 70px;
+      background-color: lightcoral;
+      color: #fff;
+      text-align: center
+    }
+    
+    img {
+			margin-left: 200px;
+      opacity: 0.3;
+      nice: 好看; /* IE currentStyle 支持 自定义属性 */
+      filter: alpha(opacity=30)
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <p>UI设计</p>
+  <p>前端开发</p>
+  <p>后台开发</p>
+  <span class="share">分享到</span>
+</div>
+<img src="images/flower.jpg" alt="flower" width="300">
+<script>
+const el = str => document.querySelector(str)
+const img = el('img')
+const share = el('.share')
+const app = el('.app')
+
+img.onmouseenter = function () {
+  move(this, 'opacity', {target: 100, speed: 10}) // opacity: 1
+}
+img.onmouseleave = function () {
+  move(this, 'opacity', {target: 30, speed: -10}) // opacity: .3
+}
+
+app.onmouseenter = function() {
+  move(this, 'left', {target: 0, speed: 10})
+  
+  // 后面的动画会清除前一个动画的定时器，同一个元素的不同属性，动画的问题
+  // move(this, 'width', {target: 300, speed: 10})
+  // move(this, 'height', {target: 300, speed: 10})
+}
+app.onmouseleave = function() {
+  move(this, 'left', {target: -100, speed: -10})
+}
+
+function move(el, attr, {target, speed}) {
+  clearInterval(el.timer)
+  let value = 0
+  
+  el.timer = setInterval(() => {
+    if (attr === 'opacity') {
+      // 小数精度问题：结果是个近似值，进行四舍五入以后就可以得到 正确值
+      value = Math.round(css(el, 'opacity') * 100)
+    }
+    else {
+      value = parseInt(css(el, attr))
+    }
+    
+    if (value === target) {
+      clearInterval(el.timer)
+    }
+    else {
+      if (attr !== 'opacity') {
+        return el.style[attr] = value + speed + 'px'
+      }
+  
+      console.log(value, speed, (value + speed) / 100)
+      el.style.opacity = (value + speed) / 100 + ''
+      el.style.filter = `alpha(opacity=${value + speed})`
+    }
+  }, 30)
+}
+
+// 获取 css样式，结果：数字字符串
+function css(obj, attr) {
+  // IE下，obj.currentStyle是一个对象，非 IE显示的是 undefined
+  if (obj.currentStyle) {
+    return obj.currentStyle[attr]
+  }
+  // 标准，第二个参数是伪类，不是伪类忽略或设置 null
+  return getComputedStyle(obj, null)[attr]
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>缓冲运动-越接近目标点，速度越小</title>
+  <style>
+    body {
+      margin: 0
+    }
+    .app {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-color: purple;
+      color: #fff
+    }
+  </style>
+</head>
+<body>
+<button>缓冲运动：愈接近目标点，速度就越小</button>
+<br><br>
+<div class="app"></div>
+<script>
+const el = str => document.querySelector(str)
+const app = el('.app')
+const btn = el('button')
+
+btn.onclick = function() {
+  let target = app.offsetLeft >= 500 ? 0 : 500
+  move(app, target)
+}
+
+function move(el, target) {
+  clearInterval(el.timer)
+  let speed = 50
+  
+  el.timer = setInterval(() => {
+    speed = (target - el.offsetLeft) / 8
+    speed = (speed > 0) ? Math.ceil(speed) : Math.floor(speed)
+    console.log(el.offsetLeft, target - el.offsetLeft, speed)
+    if (el.offsetLeft === target) {
+      clearInterval(el.timer)
+    }
+    el.style.left = el.offsetLeft + speed + 'px'
+  }, 50)
+}
+</script>
+</body>
+</html>

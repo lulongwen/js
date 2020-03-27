@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <title>勾股定理-神奇效果</title>
+  <meta name="author" content="卢珑文">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <style>
+    body, img, input {
+      margin: 0
+    }
+    .app {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+    }
+    img {
+      width: 64px
+    }
+  </style>
+</head>
+<body id="app">
+<input type="text">
+<input type="text">
+<input type="text">
+<input type="text">
+<input type="text">
+
+
+<div class="app">
+  <img src="../images/a1.png">
+  <img src="../images/a2.png">
+  <img src="../images/a3.png">
+  <img src="../images/a4.png">
+  <img src="../images/a5.png">
+</div>
+<script>
+// https://www.sohu.com/a/168602877_163917
+  const log = console.log
+  const el = str => document.querySelectorAll(str)
+  let inputs = el('#app input')
+  let imgs = [...el('#app img')]
+  
+  document.onmousemove = debounce(triggle, 10)
+  
+  function triggle(ev) {
+    let {clientY, clientX} = ev
+    imgs.forEach((item, i) => {
+      let {offsetLeft, offsetTop, offsetWidth, offsetHeight, style} = item
+      
+      // 1 图片的中心点 = 图片左边的偏移 + 图片宽度的一半
+      let x = offsetLeft + offsetWidth/2
+      let y = offsetTop + offsetHeight/2 + el('.app')[0].offsetTop
+      
+      let pointX = clientX - x
+      let pointY = clientY - y
+      // 重点是得到 C，不能直接拿 c的平方作为宽高
+      let c = Math.sqrt(Math.pow(pointX, 2), Math.pow(pointY, 2))
+      // 离得越近，缩放越小，取反
+      let scale = 1 - (c / 300)
+  
+      // 设置最小缩放比例，防止缩放成小米；不能小于自身的一半
+      if (scale <= 0.5) scale = .5
+      // inputs[i].value = `x: ${x} , y: ${y} `
+      inputs[i].value = `c: ${c}, scale: ${scale}`
+      
+      style.width = style.height = scale * 128 + 'px'
+      log(ev.clientX, ev.clientY, c)
+    })
+  }
+
+  let m5 = Math.pow(3, 2) + Math.pow(4, 2)
+  log('勾股定理', Math.sqrt(m5))
+
+  // 函数防抖
+  function debounce(fn, delay=300) {
+    return (...arg) => {
+      clearTimeout(fn.timer)
+      fn.timer = setTimeout(() => fn.apply(this, arg), delay)
+    }
+  }
+</script>
+</body>
+</html>
